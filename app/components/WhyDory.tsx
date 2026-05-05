@@ -3,13 +3,15 @@ import { FadeIn } from "./FadeIn";
 
 type CellValue = "yes" | "no" | "partial" | string;
 
-const rows: { label: string; spreadsheet: CellValue; enterprise: CellValue; dory: CellValue }[] = [
-  { label: "Setup time", spreadsheet: "Minutes", enterprise: "Days to weeks", dory: "Minutes" },
-  { label: "Monthly cost", spreadsheet: "Free + fees", enterprise: "$200–$1,000+", dory: "Free to start" },
-  { label: "Tenant credit reporting", spreadsheet: "no", enterprise: "no", dory: "yes" },
-  { label: "Quebec + Ontario forms", spreadsheet: "no", enterprise: "partial", dory: "yes" },
-  { label: "Built for 2–50 doors", spreadsheet: "partial", enterprise: "no", dory: "yes" },
-  { label: "Modern UI", spreadsheet: "no", enterprise: "no", dory: "yes" },
+const rows: { label: string; dory: CellValue; spreadsheet: CellValue; enterprise: CellValue }[] = [
+  { label: "Rent collection", dory: "Built-in", spreadsheet: "Separate tools", enterprise: "Built-in" },
+  { label: "Tenant rent reporting", dory: "yes", spreadsheet: "no", enterprise: "no" },
+  { label: "Verified rental history", dory: "yes", spreadsheet: "no", enterprise: "no" },
+  { label: "TAL / LTB notice generation", dory: "yes", spreadsheet: "no", enterprise: "partial" },
+  { label: "Maintenance tracking", dory: "yes", spreadsheet: "no", enterprise: "yes" },
+  { label: "Tenant communication", dory: "Built-in", spreadsheet: "Text / email", enterprise: "Built-in" },
+  { label: "Price for 5 doors", dory: "Free", spreadsheet: "Free + fees", enterprise: "$50–$150/mo" },
+  { label: "Designed for", dory: "Small to medium portfolios", spreadsheet: "Any size", enterprise: "200+ doors" },
 ];
 
 function CellContent({ value, highlight }: { value: CellValue; highlight?: boolean }) {
@@ -24,19 +26,24 @@ function CellContent({ value, highlight }: { value: CellValue; highlight?: boole
 
 export function WhyDory() {
   return (
-    <section id="why-dory" className="relative py-section">
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[200px] h-px bg-gradient-to-r from-transparent via-brand-deep/30 to-transparent" />
+    <section
+      id="why-dory"
+      className="relative py-section"
+      style={{ background: "linear-gradient(180deg, white 0%, #f6f8fb 100%)" }}
+    >
+      <div className="pointer-events-none absolute inset-0" style={{ background: "var(--glow-center)" }} />
 
       <div className="mx-auto max-w-6xl px-6">
-        <FadeIn className="max-w-2xl mb-14">
+        <FadeIn className="max-w-3xl mb-16">
           <p className="text-sm font-medium text-brand-azure mb-3">
             Comparison
           </p>
-          <h2 className="text-3xl sm:text-4xl font-bold tracking-tight text-gradient mb-4">
-            Why Dory.
+          <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] leading-[1.1] mb-6">
+            <span className="text-gradient">Why </span>
+            <span className="text-gradient-brand">Dory.</span>
           </h2>
-          <p className="text-muted-foreground text-lg">
-            Not a spreadsheet. Not enterprise software. Built for landlords with 2 to 50 doors.
+          <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
+            Not a spreadsheet. Not enterprise software. Built for landlords who manage their own properties and want tenants who pay on time.
           </p>
         </FadeIn>
 
@@ -46,33 +53,31 @@ export function WhyDory() {
               <thead>
                 <tr className="border-b border-glass-border">
                   <th className="py-4 px-5 text-sm font-medium text-muted-foreground w-1/4" />
+                  <th className="py-4 px-5 text-sm font-semibold text-brand-azure">
+                    Dory
+                  </th>
                   <th className="py-4 px-5 text-sm font-medium text-muted-foreground">
-                    Spreadsheets + Stripe
+                    Spreadsheets + Email
                   </th>
                   <th className="py-4 px-5 text-sm font-medium text-muted-foreground">
                     Enterprise PM
                   </th>
-                  <th className="py-4 px-5 text-sm font-semibold text-brand-azure">
-                    Dory
-                  </th>
                 </tr>
               </thead>
               <tbody>
-                {rows.map((row, i) => (
-                  <FadeIn key={row.label} delay={i * 0.06} as="span">
-                    <tr className="border-b border-glass-border last:border-0 transition-colors hover:bg-glass-hover">
-                      <td className="py-4 px-5 text-sm font-medium text-foreground">{row.label}</td>
-                      <td className="py-4 px-5">
-                        <CellContent value={row.spreadsheet} />
-                      </td>
-                      <td className="py-4 px-5">
-                        <CellContent value={row.enterprise} />
-                      </td>
-                      <td className="py-4 px-5">
-                        <CellContent value={row.dory} highlight />
-                      </td>
-                    </tr>
-                  </FadeIn>
+                {rows.map((row) => (
+                  <tr key={row.label} className="border-b border-glass-border last:border-0 transition-colors hover:bg-glass-hover">
+                    <td className="py-4 px-5 text-sm font-medium text-foreground">{row.label}</td>
+                    <td className="py-4 px-5">
+                      <CellContent value={row.dory} highlight />
+                    </td>
+                    <td className="py-4 px-5">
+                      <CellContent value={row.spreadsheet} />
+                    </td>
+                    <td className="py-4 px-5">
+                      <CellContent value={row.enterprise} />
+                    </td>
+                  </tr>
                 ))}
               </tbody>
             </table>

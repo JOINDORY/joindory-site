@@ -1,10 +1,79 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
+import { Building2, Wrench, DollarSign, Users, BarChart3, Settings, ChevronRight } from "lucide-react";
+
+const properties = [
+  {
+    address: "4521 Rue Saint-Denis",
+    area: "Le Plateau",
+    units: 6,
+    status: "Collected",
+    statusColor: "#22c55e",
+    collected: "$8,400",
+    initials: "SD",
+  },
+  {
+    address: "1845 Boul. Saint-Laurent",
+    area: "Mile End",
+    units: 4,
+    status: "2 pending",
+    statusColor: "#f59e0b",
+    collected: "$4,200",
+    initials: "SL",
+  },
+  {
+    address: "312 Avenue du Parc",
+    area: "Outremont",
+    units: 3,
+    status: "Collected",
+    statusColor: "#22c55e",
+    collected: "$5,100",
+    initials: "AP",
+  },
+  {
+    address: "7890 Rue Sherbrooke E.",
+    area: "Hochelaga",
+    units: 8,
+    status: "Maintenance",
+    statusColor: "#2C91FF",
+    collected: "$10,800",
+    initials: "SE",
+  },
+];
+
+const sidebarItems = [
+  { icon: BarChart3, label: "Dashboard", active: true },
+  { icon: Building2, label: "Properties", active: false },
+  { icon: Users, label: "Tenants", active: false },
+  { icon: DollarSign, label: "Payments", active: false },
+  { icon: Wrench, label: "Maintenance", active: false },
+  { icon: Settings, label: "Settings", active: false },
+];
+
+function useCountUp(end: number, duration: number, start: boolean) {
+  const [value, setValue] = useState(0);
+  useEffect(() => {
+    if (!start) return;
+    let startTime: number;
+    let raf: number;
+    function tick(ts: number) {
+      if (!startTime) startTime = ts;
+      const progress = Math.min((ts - startTime) / duration, 1);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      setValue(Math.round(eased * end));
+      if (progress < 1) raf = requestAnimationFrame(tick);
+    }
+    raf = requestAnimationFrame(tick);
+    return () => cancelAnimationFrame(raf);
+  }, [start, end, duration]);
+  return value;
+}
 
 export function HeroDashboard() {
   const ref = useRef<HTMLDivElement>(null);
   const [revealed, setRevealed] = useState(false);
+  const [rowsVisible, setRowsVisible] = useState(0);
 
   useEffect(() => {
     const el = ref.current;
@@ -22,99 +91,158 @@ export function HeroDashboard() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    if (!revealed) return;
+    const timer = setTimeout(() => {
+      let count = 0;
+      const interval = setInterval(() => {
+        count++;
+        setRowsVisible(count);
+        if (count >= properties.length) clearInterval(interval);
+      }, 200);
+      return () => clearInterval(interval);
+    }, 600);
+    return () => clearTimeout(timer);
+  }, [revealed]);
+
+  const doors = useCountUp(21, 1200, revealed);
+  const collected = useCountUp(28500, 1400, revealed);
+  const occupancy = useCountUp(95, 1000, revealed);
+  const tickets = useCountUp(3, 600, revealed);
+
+  const formatMoney = useCallback((n: number) => {
+    return "$" + n.toLocaleString("en-CA");
+  }, []);
+
   return (
     <div ref={ref} className="relative mt-16 lg:mt-20">
       {/* Glow behind dashboard */}
-      <div className="absolute -inset-16 bg-brand-deep/12 blur-[120px] rounded-full animate-glow-pulse" />
+      <div className="absolute -inset-16 bg-brand-deep/8 blur-[120px] rounded-full animate-glow-pulse" />
       <div className="absolute -inset-8 bg-brand-sky/5 blur-[80px] rounded-full animate-glow-drift" />
 
       <div
-        className={`relative glass-strong rounded-2xl overflow-hidden glow-sm transition-all duration-[1200ms] ${
-          revealed
-            ? "opacity-100"
-            : "opacity-0"
-        }`}
+        className="relative rounded-2xl overflow-hidden border border-black/[0.08] bg-white shadow-xl shadow-brand-deep/[0.06]"
         style={{
+          opacity: revealed ? 1 : 0,
           transform: revealed
             ? "perspective(1200px) rotateX(0deg) translateY(0px) scale(1)"
             : "perspective(1200px) rotateX(6deg) translateY(40px) scale(0.97)",
           transition: "transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1.2s cubic-bezier(0.16, 1, 0.3, 1)",
         }}
       >
-        <svg
-          viewBox="0 0 960 520"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-auto"
-        >
-          {/* Title bar */}
-          <rect width="960" height="520" rx="12" fill="rgba(255,255,255,0.02)" />
-          <rect width="960" height="40" rx="12" fill="rgba(255,255,255,0.04)" />
-          <rect y="28" width="960" height="12" fill="rgba(255,255,255,0.04)" />
-          <circle cx="24" cy="20" r="4" fill="rgba(255,255,255,0.1)" />
-          <circle cx="38" cy="20" r="4" fill="rgba(255,255,255,0.1)" />
-          <circle cx="52" cy="20" r="4" fill="rgba(255,255,255,0.1)" />
-          <text x="480" y="24" textAnchor="middle" fontSize="11" fill="rgba(255,255,255,0.3)" fontFamily="var(--font-geist-sans)">Dashboard</text>
+        {/* Window chrome */}
+        <div className="flex items-center h-10 bg-[#f8fafc] border-b border-black/[0.06] px-4">
+          <div className="flex gap-1.5">
+            <div className="w-2.5 h-2.5 rounded-full bg-[#e2e8f0]" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#e2e8f0]" />
+            <div className="w-2.5 h-2.5 rounded-full bg-[#e2e8f0]" />
+          </div>
+          <span className="flex-1 text-center text-[11px] text-[#94a3b8] select-none">Dashboard</span>
+        </div>
 
+        <div className="flex min-h-[420px] sm:min-h-[460px]">
           {/* Sidebar */}
-          <rect y="40" width="180" height="480" fill="rgba(255,255,255,0.02)" />
-          <line x1="180" y1="40" x2="180" y2="520" stroke="rgba(255,255,255,0.05)" />
-          <rect x="20" y="60" width="140" height="10" rx="5" fill="rgba(255,255,255,0.07)" />
-          <rect x="20" y="84" width="100" height="10" rx="5" fill="rgba(1,76,255,0.25)" />
-          <rect x="20" y="108" width="120" height="10" rx="5" fill="rgba(255,255,255,0.05)" />
-          <rect x="20" y="132" width="80" height="10" rx="5" fill="rgba(255,255,255,0.05)" />
-          <rect x="20" y="156" width="110" height="10" rx="5" fill="rgba(255,255,255,0.05)" />
+          <div className="hidden sm:flex flex-col w-[180px] bg-[#f8fafc] border-r border-black/[0.06] py-4 px-3 shrink-0">
+            <div className="flex items-center gap-2 px-2 mb-6">
+              <div className="w-7 h-7 rounded-lg flex items-center justify-center text-white text-[10px] font-bold" style={{ background: "linear-gradient(135deg, #014CFF, #2C91FF)" }}>
+                D
+              </div>
+              <span className="text-sm font-semibold text-[#0a0a0a]">Dory</span>
+            </div>
+            <nav className="flex flex-col gap-0.5">
+              {sidebarItems.map((item) => (
+                <div
+                  key={item.label}
+                  className={`flex items-center gap-2.5 px-2.5 py-2 rounded-lg text-[13px] transition-colors ${
+                    item.active
+                      ? "bg-brand-deep/[0.08] text-brand-deep font-medium"
+                      : "text-[#64748b] hover:text-[#0a0a0a]"
+                  }`}
+                >
+                  <item.icon className="w-3.5 h-3.5" />
+                  {item.label}
+                </div>
+              ))}
+            </nav>
+          </div>
 
-          {/* Stats row */}
-          <rect x="204" y="60" width="170" height="80" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" />
-          <text x="228" y="88" fontSize="11" fill="rgba(255,255,255,0.4)" fontFamily="var(--font-geist-sans)">Total Doors</text>
-          <text x="228" y="118" fontSize="26" fontWeight="600" fill="rgba(255,255,255,0.95)" fontFamily="var(--font-geist-sans)">12</text>
+          {/* Main content */}
+          <div className="flex-1 p-4 sm:p-6 overflow-hidden">
+            {/* Stats row */}
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 mb-6">
+              {[
+                { label: "Total Doors", value: doors.toString(), color: "text-[#0a0a0a]" },
+                { label: "Collected", value: formatMoney(collected), color: "text-[#0a0a0a]" },
+                { label: "Occupancy", value: occupancy + "%", color: "text-[#22c55e]" },
+                { label: "Open Tickets", value: tickets.toString(), color: "text-brand-deep" },
+              ].map((stat, i) => (
+                <div
+                  key={stat.label}
+                  className="rounded-xl border border-black/[0.06] bg-white p-3.5 transition-all duration-500"
+                  style={{
+                    opacity: revealed ? 1 : 0,
+                    transform: revealed ? "translateY(0)" : "translateY(12px)",
+                    transitionDelay: `${300 + i * 100}ms`,
+                  }}
+                >
+                  <p className="text-[11px] text-[#94a3b8] mb-1.5">{stat.label}</p>
+                  <p className={`text-xl sm:text-2xl font-semibold ${stat.color} tabular-nums`}>{stat.value}</p>
+                </div>
+              ))}
+            </div>
 
-          <rect x="394" y="60" width="170" height="80" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" />
-          <text x="418" y="88" fontSize="11" fill="rgba(255,255,255,0.4)" fontFamily="var(--font-geist-sans)">Collected</text>
-          <text x="418" y="118" fontSize="26" fontWeight="600" fill="rgba(255,255,255,0.95)" fontFamily="var(--font-geist-sans)">$14,200</text>
+            {/* Properties header */}
+            <div className="flex items-center justify-between mb-3 px-1">
+              <h3 className="text-[13px] font-medium text-[#0a0a0a]">Properties</h3>
+              <span className="text-[11px] text-[#94a3b8]">4 properties</span>
+            </div>
 
-          <rect x="584" y="60" width="170" height="80" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" />
-          <text x="608" y="88" fontSize="11" fill="rgba(255,255,255,0.4)" fontFamily="var(--font-geist-sans)">Occupancy</text>
-          <text x="608" y="118" fontSize="26" fontWeight="600" fill="#22c55e" fontFamily="var(--font-geist-sans)">92%</text>
+            {/* Property rows */}
+            <div className="space-y-2">
+              {properties.map((prop, i) => (
+                <div
+                  key={prop.address}
+                  className="flex items-center gap-3 sm:gap-4 rounded-xl border border-black/[0.06] bg-white p-3 sm:p-3.5 hover:border-black/[0.1] hover:shadow-sm transition-all duration-500 group cursor-default"
+                  style={{
+                    opacity: i < rowsVisible ? 1 : 0,
+                    transform: i < rowsVisible ? "translateX(0)" : "translateX(-16px)",
+                    transitionDelay: `${i * 80}ms`,
+                  }}
+                >
+                  {/* Avatar */}
+                  <div className="w-9 h-9 rounded-lg bg-[#f0f7ff] flex items-center justify-center text-[11px] font-semibold text-brand-deep shrink-0">
+                    {prop.initials}
+                  </div>
 
-          <rect x="774" y="60" width="162" height="80" rx="10" fill="rgba(255,255,255,0.03)" stroke="rgba(255,255,255,0.05)" />
-          <text x="798" y="88" fontSize="11" fill="rgba(255,255,255,0.4)" fontFamily="var(--font-geist-sans)">Open Tickets</text>
-          <text x="798" y="118" fontSize="26" fontWeight="600" fill="#4DB2FE" fontFamily="var(--font-geist-sans)">3</text>
+                  {/* Info */}
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-medium text-[#0a0a0a] truncate">{prop.address}</p>
+                    <p className="text-[11px] text-[#94a3b8]">{prop.area} · {prop.units} units</p>
+                  </div>
 
-          {/* Property rows */}
-          <rect x="204" y="164" width="732" height="72" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.05)" />
-          <rect x="228" y="182" width="36" height="36" rx="8" fill="rgba(1,76,255,0.15)" />
-          <text x="246" y="206" textAnchor="middle" fontSize="15" fontWeight="500" fill="#4DB2FE" fontFamily="var(--font-geist-sans)">A</text>
-          <text x="280" y="198" fontSize="13" fontWeight="500" fill="rgba(255,255,255,0.9)" fontFamily="var(--font-geist-sans)">123 Rue Maple, Montreal</text>
-          <text x="280" y="218" fontSize="11" fill="rgba(255,255,255,0.35)" fontFamily="var(--font-geist-sans)">4 units</text>
-          <circle cx="860" cy="196" r="4" fill="#22c55e" />
-          <text x="872" y="200" fontSize="11" fill="rgba(255,255,255,0.35)" fontFamily="var(--font-geist-sans)">Collected</text>
+                  {/* Amount */}
+                  <div className="hidden sm:block text-right mr-2">
+                    <p className="text-[13px] font-medium text-[#0a0a0a] tabular-nums">{prop.collected}</p>
+                    <p className="text-[11px] text-[#94a3b8]">this month</p>
+                  </div>
 
-          <rect x="204" y="248" width="732" height="72" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.05)" />
-          <rect x="228" y="266" width="36" height="36" rx="8" fill="rgba(1,76,255,0.15)" />
-          <text x="246" y="290" textAnchor="middle" fontSize="15" fontWeight="500" fill="#4DB2FE" fontFamily="var(--font-geist-sans)">B</text>
-          <text x="280" y="282" fontSize="13" fontWeight="500" fill="rgba(255,255,255,0.9)" fontFamily="var(--font-geist-sans)">45 Oak Ave, Toronto</text>
-          <text x="280" y="302" fontSize="11" fill="rgba(255,255,255,0.35)" fontFamily="var(--font-geist-sans)">2 units</text>
-          <circle cx="860" cy="280" r="4" fill="#f59e0b" />
-          <text x="872" y="284" fontSize="11" fill="rgba(255,255,255,0.35)" fontFamily="var(--font-geist-sans)">Lease ending</text>
+                  {/* Status */}
+                  <div className="flex items-center gap-1.5 shrink-0">
+                    <div className="relative flex h-2 w-2">
+                      {prop.status === "Collected" && (
+                        <span className="animate-ping absolute inline-flex h-full w-full rounded-full opacity-40" style={{ backgroundColor: prop.statusColor }} />
+                      )}
+                      <span className="relative inline-flex rounded-full h-2 w-2" style={{ backgroundColor: prop.statusColor }} />
+                    </div>
+                    <span className="text-[11px] text-[#94a3b8] hidden sm:inline">{prop.status}</span>
+                  </div>
 
-          <rect x="204" y="332" width="732" height="72" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.05)" />
-          <rect x="228" y="350" width="36" height="36" rx="8" fill="rgba(1,76,255,0.15)" />
-          <text x="246" y="374" textAnchor="middle" fontSize="15" fontWeight="500" fill="#4DB2FE" fontFamily="var(--font-geist-sans)">C</text>
-          <text x="280" y="366" fontSize="13" fontWeight="500" fill="rgba(255,255,255,0.9)" fontFamily="var(--font-geist-sans)">789 Pine Rd, Ottawa</text>
-          <text x="280" y="386" fontSize="11" fill="rgba(255,255,255,0.35)" fontFamily="var(--font-geist-sans)">6 units</text>
-          <circle cx="860" cy="364" r="4" fill="#2C91FF" />
-          <text x="872" y="368" fontSize="11" fill="rgba(255,255,255,0.35)" fontFamily="var(--font-geist-sans)">Maintenance</text>
-
-          <rect x="204" y="416" width="732" height="72" rx="10" fill="rgba(255,255,255,0.02)" stroke="rgba(255,255,255,0.05)" />
-          <rect x="228" y="434" width="36" height="36" rx="8" fill="rgba(1,76,255,0.15)" />
-          <text x="246" y="458" textAnchor="middle" fontSize="15" fontWeight="500" fill="#4DB2FE" fontFamily="var(--font-geist-sans)">D</text>
-          <text x="280" y="450" fontSize="13" fontWeight="500" fill="rgba(255,255,255,0.9)" fontFamily="var(--font-geist-sans)">12 Boulevard Saint-Laurent</text>
-          <text x="280" y="470" fontSize="11" fill="rgba(255,255,255,0.35)" fontFamily="var(--font-geist-sans)">3 units</text>
-          <circle cx="860" cy="448" r="4" fill="#22c55e" />
-          <text x="872" y="452" fontSize="11" fill="rgba(255,255,255,0.35)" fontFamily="var(--font-geist-sans)">Collected</text>
-        </svg>
+                  <ChevronRight className="w-3.5 h-3.5 text-[#cbd5e1] group-hover:text-[#94a3b8] transition-colors shrink-0" />
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

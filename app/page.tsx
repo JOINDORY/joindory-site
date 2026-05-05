@@ -2,6 +2,7 @@ import { NoiseTexture } from "./components/NoiseTexture";
 import { Hero } from "./components/Hero";
 import { Problem } from "./components/Problem";
 import { HowItWorks } from "./components/HowItWorks";
+import { WhoItsFor } from "./components/WhoItsFor";
 import { TenantBenefit } from "./components/TenantBenefit";
 import { LiveDemo } from "./components/LiveDemo";
 import { WhyDory } from "./components/WhyDory";
@@ -16,6 +17,7 @@ export default function Home() {
       <Hero />
       <Problem />
       <HowItWorks />
+      <WhoItsFor />
       <TenantBenefit />
       <LiveDemo />
       <WhyDory />

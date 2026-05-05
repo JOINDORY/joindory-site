@@ -8,22 +8,14 @@ export function Hero() {
     <section className="relative overflow-hidden">
       <Nav />
 
-      {/* Ambient glow orbs — drifting slowly */}
+      {/* Ambient glow */}
       <div
-        className="pointer-events-none absolute inset-0 animate-glow-drift"
+        className="pointer-events-none absolute inset-0"
         style={{ background: "var(--glow-hero)" }}
-      />
-      <div
-        className="pointer-events-none absolute inset-0 animate-glow-drift"
-        style={{ background: "var(--glow-left)", animationDelay: "-3s" }}
-      />
-      <div
-        className="pointer-events-none absolute inset-0 animate-glow-drift"
-        style={{ background: "var(--glow-right)", animationDelay: "-5s" }}
       />
 
       <div className="relative pt-32 pb-section-lg">
-        <div className="mx-auto max-w-5xl px-6 text-center">
+        <div className="mx-auto max-w-6xl px-6 text-center">
           {/* Badge */}
           <FadeIn delay={0}>
             <div className="inline-flex items-center gap-2.5 rounded-full border border-glass-border bg-glass px-4 py-1.5 mb-8">
@@ -40,22 +32,18 @@ export function Hero() {
           {/* Headline */}
           <FadeIn delay={0.1}>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-bold tracking-[-0.04em] leading-[1.05] mb-6">
-              <span className="text-gradient-brand">
-                Run every door.
-              </span>
+              <span className="text-gradient">Vetted tenants.</span>
               <br />
-              <span className="text-gradient-brand">
-                Help your tenants build credit.
-              </span>
+              <span className="text-gradient-brand">Rent that builds toward homeownership.</span>
             </h1>
           </FadeIn>
 
           {/* Subhead */}
           <FadeIn delay={0.25}>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-10">
-              Property management for small landlords in Quebec and Ontario.
-              Collect rent, manage units, track maintenance — and give your tenants
-              a reason to pay on time.
+              Manage your rentals with verified tenant history. Your tenants&apos; on-time
+              payments help them build credit toward owning a home. You get tenants
+              who treat your property like their future depends on it.
             </p>
           </FadeIn>
 

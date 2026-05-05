@@ -1,36 +1,32 @@
-import Image from "next/image";
-
 export function Footer() {
   return (
-    <footer className="py-12 border-t border-glass-border">
+    <footer className="pt-3 pb-3 border-t border-black/[0.06]">
       <div className="mx-auto max-w-6xl px-6">
         <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-6">
-          <div className="flex flex-col gap-3">
-            <Image
-              src="/brand/dorylogowhite.svg"
+          <div className="flex flex-col gap-0.5 items-start">
+            <img
+              src="/brand/dorylogoblack.svg"
               alt="Dory"
-              width={80}
-              height={26}
-              className="h-5 w-auto opacity-60"
+              className="h-20 w-auto -ml-1 -mb-5"
             />
-            <p className="text-sm text-muted-foreground/60">
-              Property management for landlords in Quebec and Ontario.
+            <p className="text-sm text-muted-foreground mb-4">
+              Property management for landlords.
             </p>
           </div>
 
           <div className="flex flex-col sm:items-end gap-3">
             <div className="flex items-center gap-5">
               <a
-                href="mailto:hello@joindory.com"
-                className="text-sm text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+                href="mailto:info@joindory.com"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
-                hello@joindory.com
+                info@joindory.com
               </a>
               <a
                 href="https://linkedin.com/company/joindory"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 LinkedIn
               </a>
@@ -38,22 +34,18 @@ export function Footer() {
                 href="https://instagram.com/joindory"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-sm text-muted-foreground/60 hover:text-muted-foreground transition-colors"
+                className="text-sm text-muted-foreground hover:text-foreground transition-colors"
               >
                 Instagram
               </a>
             </div>
-            <div className="flex items-center gap-4 text-xs text-muted-foreground/40">
+            <div className="flex items-center gap-4 text-xs text-muted-foreground">
               <span>&copy; {new Date().getFullYear()} Dory</span>
-              <a href="#" className="hover:text-muted-foreground transition-colors">Terms</a>
-              <a href="#" className="hover:text-muted-foreground transition-colors">Privacy</a>
+              <a href="/terms" className="hover:text-foreground transition-colors">Terms</a>
+              <a href="/privacy" className="hover:text-foreground transition-colors">Privacy</a>
             </div>
           </div>
         </div>
-
-        <p className="mt-8 text-xs text-muted-foreground/30">
-          Coming soon: Centris listings, tenant marketplace, AI tools.
-        </p>
       </div>
     </footer>
   );

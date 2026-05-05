@@ -1,33 +1,53 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 import { Menu, X } from "lucide-react";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
 
 const links = [
-  { label: "How it works", href: "#how-it-works" },
-  { label: "Why Dory", href: "#why-dory" },
+  { label: "Features", href: "#how-it-works" },
+  { label: "Compare", href: "#why-dory" },
   { label: "FAQ", href: "#faq" },
 ];
 
 export function Nav() {
   const [open, setOpen] = useState(false);
+  const [overBlue, setOverBlue] = useState(false);
+
+  useEffect(() => {
+    function check() {
+      const faq = document.getElementById("faq");
+      if (!faq) return;
+      const navBottom = 80;
+      const rect = faq.getBoundingClientRect();
+      // FAQ gradient turns blue in the last 25% — trigger before it reaches the nav
+      const triggerPoint = rect.top + rect.height * 0.7;
+      setOverBlue(triggerPoint < navBottom);
+    }
+
+    window.addEventListener("scroll", check, { passive: true });
+    check();
+    return () => window.removeEventListener("scroll", check);
+  }, []);
 
   return (
     <nav className="fixed top-0 left-0 right-0 z-50">
+      {/* Backdrop — frosted glass normally, solid white over blue sections */}
+      <div
+        className="absolute inset-0 -z-10 backdrop-blur-xl saturate-150"
+        style={{ background: overBlue ? "white" : "rgba(255,255,255,0.5)" }}
+      />
+
       <div className="mx-auto max-w-6xl px-6">
-        <div className="flex items-center justify-between h-16 border-b border-glass-border">
-          <a href="#" className="flex items-center gap-2">
-            <Image
-              src="/brand/dorylogowhite.svg"
+        <div className="relative flex items-center justify-between h-20 overflow-hidden">
+          <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/[0.08] to-transparent" />
+          <Link href="/" className="flex items-center gap-2">
+            <img
+              src="/brand/dorylogoblack.svg"
               alt="Dory"
-              width={100}
-              height={32}
-              className="h-7 w-auto"
-              priority
+              className="h-24 w-auto"
             />
-          </a>
+          </Link>
 
           {/* Desktop links */}
           <div className="hidden md:flex items-center gap-8">
@@ -43,13 +63,13 @@ export function Nav() {
           </div>
 
           <div className="hidden md:block">
-            <Button
-              asChild
-              size="sm"
-              className="bg-glass-strong text-foreground border border-glass-border hover:bg-glass-hover backdrop-blur-sm"
+            <a
+              href="#waitlist"
+              className="inline-flex items-center text-white text-sm font-medium px-5 py-2 rounded-lg hover:scale-[1.04] hover:brightness-110 active:scale-[0.97] transition-all duration-200"
+              style={{ background: "var(--gradient-brand)" }}
             >
-              <a href="#waitlist">Join the waitlist</a>
-            </Button>
+              Join the waitlist
+            </a>
           </div>
 
           {/* Mobile */}
@@ -63,18 +83,9 @@ export function Nav() {
         </div>
       </div>
 
-      {/* Nav backdrop — renders behind content */}
-      <div
-        className="absolute inset-0 -z-10 bg-background/60 backdrop-blur-xl"
-        style={{
-          maskImage: "linear-gradient(to bottom, black 60%, transparent)",
-          WebkitMaskImage: "linear-gradient(to bottom, black 60%, transparent)",
-        }}
-      />
-
       {/* Mobile menu */}
       {open && (
-        <div className="md:hidden bg-background/90 backdrop-blur-xl border-b border-glass-border px-6 py-4 flex flex-col gap-4">
+        <div className="md:hidden bg-white/80 backdrop-blur-xl border-b border-black/[0.06] px-6 py-4 flex flex-col gap-4">
           {links.map((link) => (
             <a
               key={link.href}
@@ -85,16 +96,14 @@ export function Nav() {
               {link.label}
             </a>
           ))}
-          <Button
-            asChild
-            size="sm"
-            className="w-full text-white"
+          <a
+            href="#waitlist"
+            onClick={() => setOpen(false)}
+            className="w-full inline-flex items-center justify-center text-white text-sm font-medium px-5 py-2.5 rounded-lg hover:brightness-110 active:scale-[0.97] transition-all duration-200"
             style={{ background: "var(--gradient-brand)" }}
           >
-            <a href="#waitlist" onClick={() => setOpen(false)}>
-              Join the waitlist
-            </a>
-          </Button>
+            Join the waitlist
+          </a>
         </div>
       )}
     </nav>
