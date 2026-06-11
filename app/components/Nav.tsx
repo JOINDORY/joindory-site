@@ -39,7 +39,7 @@ export function Nav() {
       />
 
       <div className="mx-auto max-w-6xl px-6">
-        <div className="relative flex items-center justify-between h-20 overflow-hidden">
+        <div className="relative flex items-center justify-between h-20">
           <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-black/[0.08] to-transparent" />
           <Link href="/" className="flex items-center gap-2">
             <img
