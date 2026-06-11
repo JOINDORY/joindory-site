@@ -12,6 +12,7 @@ export function Waitlist() {
   const [submitting, setSubmitting] = useState(false);
   const [role, setRole] = useState("");
   const [offset, setOffset] = useState(0);
+  const [loadedAt] = useState(() => Date.now());
 
   useEffect(() => {
     function handleScroll() {
@@ -35,6 +36,14 @@ export function Waitlist() {
     setSubmitting(true);
 
     const form = e.currentTarget;
+    const honeypot = (form.elements.namedItem("company") as HTMLInputElement).value;
+    if (honeypot) {
+      // Bot filled the hidden field — fake a success
+      setSubmitting(false);
+      setSubmitted(true);
+      return;
+    }
+
     const data = {
       firstName: (form.elements.namedItem("firstName") as HTMLInputElement).value,
       lastName: (form.elements.namedItem("lastName") as HTMLInputElement).value,
@@ -43,6 +52,7 @@ export function Waitlist() {
       role,
       doors: (form.querySelector('input[name="doors"]:checked') as HTMLInputElement | null)?.value || "",
       pain: (form.elements.namedItem("pain") as HTMLTextAreaElement).value,
+      _t: loadedAt,
     };
 
     try {
@@ -154,6 +164,11 @@ export function Waitlist() {
             </div>
 
             <form onSubmit={handleSubmit} className="p-6 space-y-4">
+              {/* Honeypot — hidden from humans, bots fill it */}
+              <div aria-hidden="true" style={{ position: "absolute", left: "-9999px", top: "-9999px" }}>
+                <label htmlFor="company">Company</label>
+                <input type="text" id="company" name="company" tabIndex={-1} autoComplete="off" />
+              </div>
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                   <label htmlFor="firstName" className="block text-sm font-medium text-foreground mb-1.5">

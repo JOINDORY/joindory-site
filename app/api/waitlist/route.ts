@@ -1,13 +1,54 @@
 import { NextResponse } from "next/server";
 import { Resend } from "resend";
 
+// Simple in-memory rate limiter (resets on cold start, good enough for Vercel serverless)
+const rateMap = new Map<string, number[]>();
+const RATE_WINDOW_MS = 60_000; // 1 minute
+const RATE_LIMIT = 3; // max submissions per window
+const MIN_SUBMIT_TIME_MS = 3_000; // minimum 3 seconds between page load and submit
+
+function isRateLimited(ip: string): boolean {
+  const now = Date.now();
+  const timestamps = rateMap.get(ip) ?? [];
+  const recent = timestamps.filter((t) => now - t < RATE_WINDOW_MS);
+  if (recent.length >= RATE_LIMIT) return true;
+  recent.push(now);
+  rateMap.set(ip, recent);
+  return false;
+}
+
 export async function POST(request: Request) {
   try {
+    // Rate limiting by IP
+    const forwarded = request.headers.get("x-forwarded-for");
+    const ip = forwarded?.split(",")[0]?.trim() || "unknown";
+    if (isRateLimited(ip)) {
+      return NextResponse.json(
+        { error: "Too many requests. Please try again later." },
+        { status: 429 }
+      );
+    }
+
     const body = await request.json();
-    const { firstName, lastName, email, city, role, doors, pain } = body;
+    const { firstName, lastName, email, city, role, doors, pain, _t } = body;
 
     if (!firstName || !lastName || !email) {
       return NextResponse.json({ error: "First name, last name, and email are required." }, { status: 400 });
+    }
+
+    // Timestamp validation — reject if submitted faster than a human could fill the form
+    if (typeof _t === "number") {
+      const elapsed = Date.now() - _t;
+      if (elapsed < MIN_SUBMIT_TIME_MS) {
+        // Bot submitted too fast — silently accept to not reveal the check
+        return NextResponse.json({ success: true });
+      }
+    }
+
+    // Basic email format check
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+      return NextResponse.json({ error: "Invalid email address." }, { status: 400 });
     }
 
     // Send emails via Resend
