@@ -32,18 +32,20 @@ export function Hero() {
           {/* Headline */}
           <FadeIn delay={0.1}>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[76px] font-bold tracking-[-0.04em] leading-[1.05] mb-6">
-              <span className="text-gradient">Vetted tenants.</span>
+              <span className="text-gradient">Finally, property management</span>
               <br />
-              <span className="text-gradient-brand">Rent that builds toward homeownership.</span>
+              <span className="text-gradient-brand">that doesn&apos;t feel like a second job.</span>
             </h1>
           </FadeIn>
 
           {/* Subhead */}
           <FadeIn delay={0.25}>
             <p className="text-lg sm:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed mb-10">
-              Manage your rentals with verified tenant history. Your tenants&apos; on-time
-              payments help them build credit toward owning a home. You get tenants
-              who treat your property like their future depends on it.
+              Dory is the simple way to manage your rentals: rent collection, leases,
+              maintenance, and tenant communication, all in one dashboard. Free to
+              start, and built for landlords who&apos;ve never used property software
+              before. Your tenants&apos; on-time payments can even help them build real
+              credit, automatically.
             </p>
           </FadeIn>
 

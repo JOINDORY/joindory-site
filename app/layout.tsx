@@ -15,14 +15,14 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Dory - Property management for landlords who want better tenants",
+  title: "Dory: Property management without the learning curve",
   description:
-    "Manage your rentals. Collect rent, track every door, and help your tenants build toward their future.",
+    "Collect rent, manage leases, track maintenance, and message tenants from one simple dashboard. Free to start. Built for landlords who've never used property software before.",
   metadataBase: new URL("https://joindory.com"),
   openGraph: {
-    title: "Dory - Property management for landlords who want better tenants",
+    title: "Dory: Property management without the learning curve",
     description:
-      "Manage your rentals. Collect rent, track every door, and help your tenants build toward their future.",
+      "Collect rent, manage leases, track maintenance, and message tenants from one simple dashboard. Free to start. Built for landlords who've never used property software before.",
     url: "https://joindory.com",
     siteName: "Dory",
     locale: "en_CA",
@@ -36,9 +36,9 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Dory - Property management for landlords who want better tenants",
+    title: "Dory: Property management without the learning curve",
     description:
-      "Manage your rentals. Collect rent, track every door, and help your tenants build toward their future.",
+      "Collect rent, manage leases, track maintenance, and message tenants from one simple dashboard. Free to start. Built for landlords who've never used property software before.",
     images: ["/brand/Dory Site Logo.png"],
   },
 };

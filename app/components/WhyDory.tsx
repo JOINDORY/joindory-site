@@ -3,15 +3,15 @@ import { FadeIn } from "./FadeIn";
 
 type CellValue = "yes" | "no" | "partial" | string;
 
-const rows: { label: string; dory: CellValue; spreadsheet: CellValue; enterprise: CellValue }[] = [
-  { label: "Rent collection", dory: "Built-in", spreadsheet: "Separate tools", enterprise: "Built-in" },
-  { label: "Tenant rent reporting", dory: "yes", spreadsheet: "no", enterprise: "no" },
-  { label: "Verified rental history", dory: "yes", spreadsheet: "no", enterprise: "no" },
-  { label: "TAL / LTB notice generation", dory: "yes", spreadsheet: "no", enterprise: "partial" },
-  { label: "Maintenance tracking", dory: "yes", spreadsheet: "no", enterprise: "yes" },
-  { label: "Tenant communication", dory: "Built-in", spreadsheet: "Text / email", enterprise: "Built-in" },
-  { label: "Price for 5 doors", dory: "Free", spreadsheet: "Free + fees", enterprise: "$50–$150/mo" },
-  { label: "Designed for", dory: "Small to medium portfolios", spreadsheet: "Any size", enterprise: "200+ doors" },
+const rows: { label: string; dory: CellValue; freeTools: CellValue; enterprise: CellValue }[] = [
+  { label: "Setup time", dory: "Minutes", freeTools: "Minutes to hours", enterprise: "Days, often with a call" },
+  { label: "Rent collection", dory: "Built-in", freeTools: "Built-in", enterprise: "Built-in" },
+  { label: "Tenant portal and chat", dory: "Built-in", freeTools: "Payments only", enterprise: "Built-in" },
+  { label: "Tenant screening", dory: "yes", freeTools: "yes", enterprise: "yes" },
+  { label: "TAL / LTB notice generation", dory: "yes", freeTools: "no", enterprise: "partial" },
+  { label: "Tenant rent reporting", dory: "Built-in, free", freeTools: "Often a paid add-on", enterprise: "no" },
+  { label: "Price for 5 doors", dory: "Free", freeTools: "Free", enterprise: "$50 to $150/mo" },
+  { label: "Designed for", dory: "1 unit or 50", freeTools: "Any size", enterprise: "200+ doors" },
 ];
 
 function CellContent({ value, highlight }: { value: CellValue; highlight?: boolean }) {
@@ -57,7 +57,7 @@ export function WhyDory() {
                     Dory
                   </th>
                   <th className="py-4 px-5 text-sm font-medium text-muted-foreground">
-                    Spreadsheets + Email
+                    Free landlord tools
                   </th>
                   <th className="py-4 px-5 text-sm font-medium text-muted-foreground">
                     Enterprise PM
@@ -72,7 +72,7 @@ export function WhyDory() {
                       <CellContent value={row.dory} highlight />
                     </td>
                     <td className="py-4 px-5">
-                      <CellContent value={row.spreadsheet} />
+                      <CellContent value={row.freeTools} />
                     </td>
                     <td className="py-4 px-5">
                       <CellContent value={row.enterprise} />

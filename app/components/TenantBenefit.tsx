@@ -5,11 +5,11 @@ import { FadeIn } from "./FadeIn";
 import { ArrowRight } from "lucide-react";
 
 const loopSteps = [
-  { label: "Tenant pays rent", detail: "On-time payment through Dory" },
-  { label: "Payment recorded", detail: "Verified, receipt-backed record" },
-  { label: "Credit history builds", detail: "On-time payments can contribute to their credit profile" },
-  { label: "Tenant builds toward their future", detail: "A stronger financial foundation over time" },
-  { label: "Landlord gets invested tenants", detail: "Longer tenancies, fewer issues" },
+  { label: "Tenant pays rent", detail: "On time, through Dory" },
+  { label: "Payment recorded", detail: "Verified, with a receipt" },
+  { label: "Reported toward their credit", detail: "Automatic, with their consent" },
+  { label: "Their credit history grows", detail: "A stronger financial foundation over time" },
+  { label: "You get a tenant who's invested", detail: "Longer tenancies, fewer issues" },
 ];
 
 const historyRows = [
@@ -204,14 +204,14 @@ export function TenantBenefit() {
       <div className="relative mx-auto max-w-6xl px-6">
         <FadeIn className="max-w-3xl mb-16">
           <p className="text-sm font-medium text-brand-azure mb-3">
-            The Dory difference
+            A perk that costs you nothing
           </p>
           <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-[-0.03em] leading-[1.1] mb-6">
-            <span className="text-gradient">Your tenants pay rent. </span>
-            <span className="text-gradient-brand">It builds toward their home.</span>
+            <span className="text-gradient">Tenants who pay on time </span>
+            <span className="text-gradient-brand">get something back for it.</span>
           </h2>
           <p className="text-lg text-muted-foreground leading-relaxed max-w-2xl">
-            Every on-time rent payment through Dory can help your tenants build credit toward qualifying for a mortgage. Tenants working toward homeownership pay on time, stay longer, and take care of your property.
+            On-time rent payments through Dory can be automatically reported to help your tenants build credit, free, with their consent. Tenants working toward something tend to take better care of where they live, pay on time, and stay longer.
           </p>
         </FadeIn>
 

@@ -7,7 +7,7 @@ const faqs = [
   {
     question: "Where does Dory work?",
     answer:
-      "Dory launches in Quebec and Ontario. We support jurisdiction-specific requirements for both provinces, including TAL and LTB processes, rent increase notices, and lease compliance.",
+      "Dory launches in Quebec and Ontario, with more provinces coming as we grow. We support jurisdiction-specific requirements for both provinces, including TAL and LTB processes, rent increase notices, and lease compliance.",
   },
   {
     question: "How does rent reporting work for tenants?",
@@ -47,7 +47,7 @@ const faqs = [
   {
     question: "How much does it cost?",
     answer:
-      "Dory is free for landlords with 1 to 5 doors. Paid tiers unlock more doors and advanced features. Founding members who join the waitlist lock in early pricing.",
+      "Dory's core features, including properties, tenants, payments, maintenance, chat, and tenant credit reporting, are free no matter how many doors you manage. Dory Pro, coming soon, adds advanced automation and reporting for landlords who want more. Founding members who join the waitlist lock in early access to Pro pricing.",
   },
 ];
 

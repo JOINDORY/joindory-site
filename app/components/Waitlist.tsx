@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { ArrowRight, CheckCircle2 } from "lucide-react";
 import { FadeIn } from "./FadeIn";
 
-const doorOptions = ["1–5", "6–10", "11–25", "26–50", "50+"];
+const doorOptions = ["1 to 5", "6 to 10", "11 to 25", "26 to 50", "50+"];
 const roleOptions = ["Landlord", "Tenant", "Both", "Other"];
 
 export function Waitlist() {

@@ -4,7 +4,7 @@ import { Footer } from "../components/Footer";
 import { NoiseTexture } from "../components/NoiseTexture";
 
 export const metadata: Metadata = {
-  title: "Privacy Policy - Dory",
+  title: "Privacy Policy: Dory",
   description: "Privacy Policy for joindory.com",
 };
 
@@ -87,15 +87,15 @@ export default function PrivacyPage() {
               </h2>
               <ul className="list-disc pl-5 space-y-2">
                 <li>
-                  <strong>Resend</strong> — email delivery for waitlist
+                  <strong>Resend</strong>: email delivery for waitlist
                   confirmations and updates
                 </li>
                 <li>
-                  <strong>Meta (Facebook)</strong> — advertising measurement via
+                  <strong>Meta (Facebook)</strong>: advertising measurement via
                   the Meta Pixel, subject to your cookie consent
                 </li>
                 <li>
-                  <strong>Google</strong> — advertising measurement, subject to
+                  <strong>Google</strong>: advertising measurement, subject to
                   your cookie consent
                 </li>
               </ul>

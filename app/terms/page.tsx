@@ -4,7 +4,7 @@ import { Footer } from "../components/Footer";
 import { NoiseTexture } from "../components/NoiseTexture";
 
 export const metadata: Metadata = {
-  title: "Terms of Service - Dory",
+  title: "Terms of Service: Dory",
   description: "Terms of Service for joindory.com",
 };
 
